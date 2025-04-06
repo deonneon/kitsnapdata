@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitsnap Product Data</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            overflow: auto;
+            max-height: 80vh;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .json-formatter {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kitsnap Product Data</h1>
+    
+    <div class="toolbar">
+        <a href="products.json" class="btn">Download Raw JSON</a>
+    </div>
+    
+    <pre id="json-display" class="json-formatter">Loading JSON data...</pre>
+    
+    <div class="footer">
+        <p>Hosted on <a href="https://github.com/deonneon/kitsnapdata" target="_blank">GitHub</a></p>
+    </div>
+    
+    <script>
+        // Fetch and display the JSON data
+        fetch('products.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('json-display').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('json-display').textContent = 'Error loading JSON: ' + error.message;
+            });
+    </script>
+</body>
+</html> 
