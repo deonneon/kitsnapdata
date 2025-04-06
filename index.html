@@ -3,35 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitsnap Product Data</title>
+    <title>Redirecting to JSON data...</title>
+    <script>
+        // Redirect to products.json
+        window.location.href = 'products.json';
+    </script>
 </head>
 <body>
-    <pre id="json-display"></pre>
-    
-    <script>
-        // DOM Elements
-        const loadingEl = document.getElementById('loading');
-        const errorEl = document.getElementById('error');
-        const jsonDisplayEl = document.getElementById('json-display');
-        
-        // Fetch and display the JSON data
-        fetch('products.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Display JSON with formatting
-                jsonDisplayEl.textContent = JSON.stringify(data, null, 2);
-                loadingEl.style.display = 'none';
-            })
-            .catch(error => {
-                loadingEl.style.display = 'none';
-                errorEl.style.display = 'block';
-                errorEl.textContent = 'Error loading JSON: ' + error.message;
-            });
-    </script>
+    <p>If you are not redirected automatically, follow this <a href="products.json">link to the JSON data</a>.</p>
 </body>
 </html> 
