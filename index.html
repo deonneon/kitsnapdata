@@ -9,6 +9,11 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
             color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
@@ -18,22 +23,15 @@
             margin-bottom: 30px;
             color: #2c3e50;
         }
-        pre {
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            padding: 15px;
-            overflow: auto;
-            max-height: 80vh;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .json-formatter {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-        }
         .toolbar {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .toolbar-buttons {
+            display: flex;
+            gap: 10px;
         }
         .btn {
             background: #3498db;
@@ -44,48 +42,302 @@
             cursor: pointer;
             font-size: 14px;
             transition: background 0.3s;
+            text-decoration: none;
         }
         .btn:hover {
             background: #2980b9;
         }
-        a {
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .products-container {
+            margin-top: 20px;
+        }
+        .product-category {
+            margin-bottom: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .category-header {
+            background-color: #e9ecef;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .product-list {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        .product-brand {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .product-price {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 14px;
+        }
+        .product-availability {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .available {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .unavailable {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .tag {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .view-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
             color: #3498db;
             text-decoration: none;
+            font-weight: bold;
         }
-        a:hover {
+        .view-link:hover {
             text-decoration: underline;
+        }
+        .raw-json {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: auto;
+            padding: 20px;
+            max-height: 80vh;
+            margin-top: 20px;
+        }
+        .json-formatter {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            white-space: pre;
         }
         .footer {
             margin-top: 30px;
             text-align: center;
             font-size: 14px;
             color: #7f8c8d;
+            padding: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: #6c757d;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <h1>Kitsnap Product Data</h1>
-    
-    <div class="toolbar">
-        <a href="products.json" class="btn">Download Raw JSON</a>
-    </div>
-    
-    <pre id="json-display" class="json-formatter">Loading JSON data...</pre>
-    
-    <div class="footer">
-        <p>Hosted on <a href="https://github.com/deonneon/kitsnapdata" target="_blank">GitHub</a></p>
+    <div class="container">
+        <h1>Kitsnap Product Data</h1>
+        
+        <div class="toolbar">
+            <div class="toolbar-buttons">
+                <a href="#" id="view-cards" class="btn">View as Cards</a>
+                <a href="#" id="view-json" class="btn btn-secondary">View Raw JSON</a>
+            </div>
+            <a href="products.json" class="btn" download>Download JSON</a>
+        </div>
+        
+        <div id="loading" class="loading">Loading product data...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="products-view" class="products-container" style="display: none;"></div>
+        
+        <div id="raw-json" class="raw-json">
+            <pre id="json-display" class="json-formatter">Loading JSON data...</pre>
+        </div>
+        
+        <div class="footer">
+            <p>Hosted on <a href="https://github.com/deonneon/kitsnapdata" target="_blank">GitHub</a></p>
+        </div>
     </div>
     
     <script>
+        // DOM Elements
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('error');
+        const productsViewEl = document.getElementById('products-view');
+        const rawJsonEl = document.getElementById('raw-json');
+        const jsonDisplayEl = document.getElementById('json-display');
+        const viewCardsBtn = document.getElementById('view-cards');
+        const viewJsonBtn = document.getElementById('view-json');
+        
+        // View Toggles
+        viewCardsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            productsViewEl.style.display = 'block';
+            rawJsonEl.style.display = 'none';
+            viewCardsBtn.classList.remove('btn-secondary');
+            viewJsonBtn.classList.add('btn-secondary');
+        });
+        
+        viewJsonBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            productsViewEl.style.display = 'none';
+            rawJsonEl.style.display = 'block';
+            viewCardsBtn.classList.add('btn-secondary');
+            viewJsonBtn.classList.remove('btn-secondary');
+        });
+        
         // Fetch and display the JSON data
         fetch('products.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
-                document.getElementById('json-display').textContent = JSON.stringify(data, null, 2);
+                // Display raw JSON
+                jsonDisplayEl.textContent = JSON.stringify(data, null, 2);
+                
+                // Display as cards
+                renderProductCards(data);
+                
+                // Show products view, hide loading
+                loadingEl.style.display = 'none';
+                productsViewEl.style.display = 'block';
             })
             .catch(error => {
-                document.getElementById('json-display').textContent = 'Error loading JSON: ' + error.message;
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Error loading JSON: ' + error.message;
+                jsonDisplayEl.textContent = 'Error loading JSON: ' + error.message;
             });
+            
+        function renderProductCards(data) {
+            let productsHtml = '';
+            
+            // For each category/product group
+            for (const [categoryName, products] of Object.entries(data)) {
+                productsHtml += `
+                    <div class="product-category">
+                        <div class="category-header">${categoryName}</div>
+                        <div class="product-list">
+                `;
+                
+                // For each product in the category
+                products.forEach(product => {
+                    // Get the first variant for display
+                    const variant = product.variants && product.variants.length > 0 ? product.variants[0] : null;
+                    
+                    productsHtml += `
+                        <div class="product-card">
+                            ${variant && variant.image_url ? 
+                                `<img src="${variant.image_url}" alt="${product.name}" class="product-image">` : 
+                                '<div class="product-image" style="display: flex; align-items: center; justify-content: center; color: #adb5bd;">No Image</div>'
+                            }
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
+                                <div class="product-brand">${product.brand || 'Unknown Brand'}</div>
+                                ${variant ? 
+                                    `<div class="product-price">$${variant.price.toFixed(2)}</div>` : 
+                                    '<div class="product-price">Price not available</div>'
+                                }
+                                <div class="product-details">
+                                    ${variant ? 
+                                        `<div>SKU: ${variant.sku || 'N/A'}</div>
+                                         <div>
+                                            <span class="product-availability ${variant.availability ? 'available' : 'unavailable'}">
+                                                ${variant.availability ? 'In Stock' : 'Out of Stock'}
+                                            </span>
+                                         </div>` : 
+                                        ''
+                                    }
+                                    ${product.category ? `<div>Category: ${product.category}</div>` : ''}
+                                </div>
+                                ${product.tags && product.tags.length > 0 ? 
+                                    `<div class="tags">
+                                        ${product.tags.slice(0, 5).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                        ${product.tags.length > 5 ? `<span class="tag">+${product.tags.length - 5} more</span>` : ''}
+                                    </div>` : 
+                                    ''
+                                }
+                                <a href="${product.product_url}" class="view-link" target="_blank">View Product</a>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                productsHtml += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            productsViewEl.innerHTML = productsHtml;
+        }
     </script>
 </body>
 </html> 
